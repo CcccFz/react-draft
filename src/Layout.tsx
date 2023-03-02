@@ -18,6 +18,9 @@ export default function Layout() {
             <Link to="/todo">Todo</Link>
           </li>
           <li>
+            <Link to="/store">Store</Link>
+          </li>
+          <li>
             <Link to="/tmp">Tmp</Link>
           </li>
         </ul>
