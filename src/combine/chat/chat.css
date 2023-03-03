@@ -1,0 +1,28 @@
+.SplitPlane {
+  width: 100%;
+  height: 500px;
+}
+
+.SplitPlane-left {
+  float: left;
+  width: 30%;
+  height: 100%;
+}
+
+.SplitPlane-right {
+  float: right;
+  width: 70%;
+  height: 100%;
+}
+
+.ContactPlane {
+  width: 100%;
+  height: 100%;
+  background-color: lightblue;
+}
+
+.ChatPlane {
+  width: 100%;
+  height: 100%;
+  background-color: pink;
+}

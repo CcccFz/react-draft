@@ -1,9 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
+import "./layout.css";
 
 export default function Layout() {
   return (
-    <div className="relative h-32 w-32">
-      <nav className="absolute inset-x-0 top-0 h-16">
+    <div className="Layout">
+      <nav className="Layout-menu">
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -21,13 +22,27 @@ export default function Layout() {
             <Link to="/store">Store</Link>
           </li>
           <li>
+            <Link to="/welcome">Welcome</Link>
+          </li>
+          <li>
+            <Link to="/chat">Chat</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
+            <Link to="/product">Product</Link>
+          </li>
+          <li>
             <Link to="/tmp">Tmp</Link>
           </li>
         </ul>
       </nav>
 
       <hr />
-      <Outlet />
+      <div className="Layout-content">
+        <Outlet/>
+      </div>
     </div>
   );
 }

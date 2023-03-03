@@ -1,0 +1,14 @@
+.Layout {
+  width: 100%;
+  height: 100%;
+}
+
+.Layout-menu {
+  width: 100%;
+  height: 30%;
+}
+
+.Layout-content {
+  width: 100%;
+  height: 70%;
+}
