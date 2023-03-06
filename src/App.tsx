@@ -10,6 +10,14 @@ import { Chat } from "./combine/chat/Chat";
 import "./app.css";
 import { Login } from "./combine/login/Login";
 import { Product } from "./product/Product";
+import { People } from "./fragment/People";
+import { BaseHook } from "./base_hook/BaseHook";
+import { HocExample } from "./hoc/Hoc"
+import { BaseRef } from "./ref/Ref";
+import { BaseRenderProps } from "./render_props/BaseRenderProps";
+import { HookDaxiang } from "./render_props/HookDaxiang";
+import { FormikExample } from "./formik/FormikExample";
+import { ZustandExample } from "./zustand/ZustandExample";
 
 function App() {
   return (
@@ -25,6 +33,14 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/login" element={<Login />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/people" element={<People />} />
+          <Route path="/base_hook" element={<BaseHook />} />
+          <Route path="/hoc_example" element={<HocExample />} />
+          <Route path="/ref" element={<BaseRef />} />
+          <Route path="/render_props" element={<BaseRenderProps />} />
+          <Route path="/hook_daxiang" element={<HookDaxiang />} />
+          <Route path="/formik_example" element={<FormikExample />} />
+          <Route path="/zustand" element={<ZustandExample />} />
         </Route>
       </Routes>
     </div>

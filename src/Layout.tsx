@@ -34,6 +34,29 @@ export default function Layout() {
             <Link to="/product">Product</Link>
           </li>
           <li>
+            <Link to="/people">People</Link>
+          </li>
+          <li>
+            <Link to="/base_hook">BaseHook</Link>
+          </li>
+          <li>
+            <Link to="/hoc_example">HocExample</Link>
+          </li>
+          <li>
+            <Link to="/render_props">RenderProps</Link>
+            {' '}
+            <Link to="/hook_daxiang">HookDaxiang</Link>
+          </li>
+          <li>
+            <Link to="/ref">Ref</Link>
+          </li>
+          <li>
+            <Link to="/formik_example">FormikExample</Link>
+          </li>
+          <li>
+            <Link to="/zustand">ZustandExample</Link>
+          </li>
+          <li>
             <Link to="/tmp">Tmp</Link>
           </li>
         </ul>
