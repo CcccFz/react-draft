@@ -57,7 +57,7 @@ export default function Layout() {
             <Link to="/zustand">ZustandExample</Link>
           </li>
           <li>
-            <Link to="/tmp">Tmp</Link>
+            <Link to="/box">Box</Link>
           </li>
         </ul>
       </nav>

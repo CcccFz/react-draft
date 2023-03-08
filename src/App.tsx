@@ -3,8 +3,8 @@ import Layout from './Layout'
 import About from './About'
 import Dashboard from './Dashboard'
 import Home from './Home'
-import { Todo } from './Todo';
-import { Store } from "./StorePrice";
+import { Todo } from './todo/Todo';
+import { Store } from "./store_price/StorePrice";
 import { Welcome } from "./combine/welcome/Welcome";
 import { Chat } from "./combine/chat/Chat";
 import "./app.css";
@@ -18,6 +18,7 @@ import { BaseRenderProps } from "./render_props/BaseRenderProps";
 import { HookDaxiang } from "./render_props/HookDaxiang";
 import { FormikExample } from "./formik/FormikExample";
 import { ZustandExample } from "./zustand/ZustandExample";
+import { BoxPage } from "./box/Box";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/hook_daxiang" element={<HookDaxiang />} />
           <Route path="/formik_example" element={<FormikExample />} />
           <Route path="/zustand" element={<ZustandExample />} />
+          <Route path="/box" element={<BoxPage />} />
         </Route>
       </Routes>
     </div>
