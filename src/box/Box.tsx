@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Checkbox,
   Input,
@@ -7,7 +8,7 @@ import {
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import useSWR from "swr";
-import { create } from 'zustand';
+import { create, useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
 
 export function BoxPage() {
@@ -21,33 +22,46 @@ export function BoxPage() {
 interface BoxPanelState {
   box_name: string
   is_display: boolean
-  display_status: boolean | undefined
+  boxes: Object[]
+  pageIndex: number
+  total: number
   setBoxName: (box_name: string) => void
   trigerIsDisplay: () => void
-  changeDisplayStatus: (display_status: boolean | undefined) => void
+  setPageIndex: (pageIndex: number) => void
+  setBoxes: (boxes: Object[]) => void
+  setTotal: (total: number) => void
 }
 
 const useBoxPanelStore = create<BoxPanelState>()((set) => ({
   box_name: "",
   is_display: true,
-  display_status: undefined,
+  pageIndex: 1,
+  boxes: [],
+  total: 0,
   setBoxName: (box_name) => set(() => ({ box_name })),
   trigerIsDisplay: () => set((state) => ({is_display: !state.is_display})),
-  changeDisplayStatus: (display_status) => set(() => ({display_status}))
+  setPageIndex: (pageIndex) => set({ pageIndex }),
+  setTotal: (total) => set({ total }),
+  setBoxes: (boxes) => set({ boxes }),
 }));
 
 function BoxPanel() {
   const { 
-    box_name, is_display, display_status,
-    setBoxName, trigerIsDisplay, changeDisplayStatus
+    box_name, is_display,
+    setBoxName, trigerIsDisplay, setBoxes, setPageIndex
   } = useBoxPanelStore((state) => ({...state}), shallow)
 
   const createBox = () => {
-    const data = axios.post("http://dev.app.puliedu.com"+'/api/external/water_box/create', {
+    axios.post("http://dev.app.puliedu.com"+'/api/external/water_box/create', {
       device_id: box_name, device_name: box_name,
       live_stream_url: 'xxx.xxx', is_display
     }).then(res => res.data.data);
+
+    axios.post("http://dev.app.puliedu.com"+'/api/external/water_box/list', {page_size: 10, page_index: 1})
+      .then(res => setBoxes(res.data.data.boxes));
+
     setBoxName('');
+    setPageIndex(1);
   }
 
   return (
@@ -57,12 +71,7 @@ function BoxPanel() {
       <br />
       IsDisplay: {" "} <Checkbox checked={is_display} onClick={trigerIsDisplay} />
 
-      <BoxList boxPanel={{box_name, is_display}} />
-
-      Show: {" "}
-      <Button disabled={display_status === undefined} onClick={() => changeDisplayStatus(undefined)}>All</Button>
-      <Button disabled={display_status === true} onClick={() => changeDisplayStatus(true)}>Display</Button>
-      <Button disabled={display_status === false} onClick={() => changeDisplayStatus(false)}>Not Display</Button>
+      <BoxList />
     </div>
   );
 }
@@ -73,22 +82,24 @@ const fetcher = (url: string, param: any) => {
   return data;
 }
 
-function BoxList(props: any) {
-  const [pageIndex, setPageIndex] = useState(1);
-  const { box_name, is_display } = props.boxPanel;
-  const { data, error, isLoading } = useSWR('/api/external/water_box/list', url => fetcher(url, {page_size: 10, page_index: pageIndex}));
+function BoxList() {
+  const { box_name, is_display, boxes, pageIndex, total, setTotal, setBoxes, setPageIndex } = useBoxPanelStore((state) => ({...state}), shallow);
 
-  if (error) return <div>failed to load</div>
-  if (isLoading) return <div>loading...</div>
-  
-  const boxes = data.boxes.filter((box: any) => {
-    if (is_display !== box.is_display) {
-      return false;
-    }
-    if (box.device_name.indexOf(box_name) === -1) {
-      return false;
-    }
-    return true;
+  useEffect(() => {
+    axios.post("http://dev.app.puliedu.com"+'/api/external/water_box/list', {page_size: 10, page_index: pageIndex})
+      .then(res => {
+        setBoxes(res.data.data.boxes.filter((box: any) => {
+          if (is_display !== box.is_display) {
+            return false;
+          }
+          if (box.device_name.indexOf(box_name) === -1) {
+            return false;
+          }
+          return true;
+        }));
+        setTotal(res.data.data.total);
+      })
+      .catch(err =>alert(err));
   });
 
   return (
@@ -99,7 +110,7 @@ function BoxList(props: any) {
         renderItem={(box: any) => <List.Item>{box.device_name}</List.Item>}
         style={{ width: 'calc(50% - 100px)' }}
       />
-      <Pagination current={pageIndex} onChange={setPageIndex} total={data.total} style={{ width: 'calc(50% - 100px)' }} />
+      <Pagination current={pageIndex} onChange={setPageIndex} total={total} style={{ width: 'calc(50% - 100px)' }} />
     </div>
   );
 }
