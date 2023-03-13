@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import useSWR from "swr";
 import { create, useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
+import { box_url } from './puliedu';
 
 export function BoxPage() {
   return (
@@ -52,12 +53,12 @@ function BoxPanel() {
   } = useBoxPanelStore((state) => ({...state}), shallow)
 
   const createBox = () => {
-    axios.post("http://dev.app.puliedu.com"+'/api/external/water_box/create', {
+    axios.post(box_url.url+box_url.create, {
       device_id: box_name, device_name: box_name,
       live_stream_url: 'xxx.xxx', is_display
     }).then(res => res.data.data);
 
-    axios.post("http://dev.app.puliedu.com"+'/api/external/water_box/list', {page_size: 10, page_index: 1})
+    axios.post(box_url.url+box_url.list, {page_size: 10, page_index: 1})
       .then(res => setBoxes(res.data.data.boxes));
 
     setBoxName('');
@@ -77,8 +78,8 @@ function BoxPanel() {
 }
 
 
-const fetcher = (url: string, param: any) => {
-  const data = axios.post("http://dev.app.puliedu.com"+url, param).then(res => res.data.data);
+const fetcher = (path: string, param: any) => {
+  const data = axios.post(box_url.url+path, param).then(res => res.data.data);
   return data;
 }
 
@@ -86,7 +87,7 @@ function BoxList() {
   const { box_name, is_display, boxes, pageIndex, total, setTotal, setBoxes, setPageIndex } = useBoxPanelStore((state) => ({...state}), shallow);
 
   useEffect(() => {
-    axios.post("http://dev.app.puliedu.com"+'/api/external/water_box/list', {page_size: 10, page_index: pageIndex})
+    axios.post(box_url.url+box_url.list, {page_size: 10, page_index: pageIndex})
       .then(res => {
         setBoxes(res.data.data.boxes.filter((box: any) => {
           if (is_display !== box.is_display) {
